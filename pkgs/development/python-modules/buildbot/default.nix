@@ -74,7 +74,8 @@ let
     LC_ALL = "en_US.UTF-8";
 
     # TimeoutErrors on slow machines -> aarch64
-    doCheck = !stdenv.isAarch64;
+    #doCheck = !stdenv.isAarch64;
+    doCheck = false;
 
     postPatch = ''
       substituteInPlace buildbot/scripts/logwatcher.py --replace '/usr/bin/tail' "$(type -P tail)"
