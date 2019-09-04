@@ -8170,6 +8170,22 @@ let
     propagatedBuildInputs = [ Gtk3 ];
   };
 
+  Gtk3WebKit = buildPerlPackage rec {
+    pname = "Gtk3-WebKit";
+    version = "0.06";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/P/PO/POTYL/${pname}-${version}.tar.gz";
+      sha256 = "3b5cde67885961fd4522dd124a5ba4c4d1ef3dbda7166d97aa40fdfe32554606";
+    };
+    buildInputs = [ Cairo CairoGObject Glib TestNeedsDisplay ];
+    doCheck = false;
+    propagatedBuildInputs = [ GlibObjectIntrospection Gtk3 ];
+    meta = {
+      description = "WebKit bindings for Perl";
+      license = stdenv.lib.licenses.free;
+    };
+  };
+
   Guard = buildPerlPackage {
     pname = "Guard";
     version = "1.023";
@@ -15979,6 +15995,27 @@ let
     propagatedBuildInputs = [ DateTimeFormatDateParse Error LWP ParamsValidate ];
   };
 
+  s5pdf = buildPerlPackage rec {
+    pname = "App-s5pdf";
+    version = "0.02";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/P/PO/POTYL/${pname}-${version}.tar.gz";
+      sha256 = "0w2da4mc0rzf35h3s3iavfbxixqjv69m7jm00jjckz9bhxvqk3bb";
+    };
+    propagatedBuildInputs = [ Cairo CairoGObject Glib Gtk3 Gtk3WebKit URI ];
+    outputs = [ "out" ];
+
+    preConfigure = ''
+      patchShebangs .
+    '';
+
+    meta = {
+      homepage = https://github.com/potyl/perl-App-s5pdf;
+      description = "A S5 to PDF converter";
+      license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
   SafeIsa = buildPerlPackage {
     pname = "Safe-Isa";
     version = "1.000010";
@@ -18434,6 +18471,20 @@ let
     };
     meta = {
       description = "Skip tests when modules not available";
+      license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
+    };
+  };
+
+  TestNeedsDisplay = buildPerlPackage rec {
+    pname = "Test-NeedsDisplay";
+    version = "1.07";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/A/AD/ADAMK/${pname}-${version}.tar.gz";
+      sha256 = "60e93f6777a423c3b598ddafaf79d69c5f567ffc92f1b20229f51381df4344a9";
+    };
+    buildInputs = [ pkgs.xvfb_run ];
+    meta = {
+      description = "Ensure that tests needing a display have one";
       license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
     };
   };
